@@ -6,7 +6,7 @@ function HeroCard({ hero, onClick }) {
     >
       <div className="overflow-hidden rounded-xl">
         <img
-          src={hero.images?.md || "https://via.placeholder.com/150"}
+          src={hero.images?.md}
           alt={hero.name}
           className="w-full h-60 object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
         />
