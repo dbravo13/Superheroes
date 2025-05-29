@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import HeroCard from "../components/HeroCard";
-import { fetchHeroesService } from "../services/heroService";
-import HeroModal from "../components/HeroModal";
 import Lottie from "lottie-react";
-import loadingAnimation from "../assets/loading.json";
-import Navbar from "../components/Navbar";
 
 import "../styles/home.css";
+
+import { fetchHeroesService, fetchHeroDetails } from "../services/heroService";
+
+import HeroCard from "../components/HeroCard";
+import HeroModal from "../components/HeroModal";
+import Navbar from "../components/Navbar";
+
+import loadingAnimation from "../assets/loading.json";
 
 function Home() {
   const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [selectedHeroId, setSelectedHeroId] = useState(null);
+  const [selectedHeroDetails, setSelectedHeroDetails] = useState(null);
+
   const [size, setSize] = useState(20);
   const [page, setPage] = useState(1);
   const [nameFilter, setNameFilter] = useState("");
-
-  const [selectedHero, setSelectedHero] = useState(null);
 
   const [lastPage, setLastPage] = useState(1);
 
@@ -34,6 +38,21 @@ function Home() {
         setLoading(false);
       });
   }, [size, page]);
+
+  useEffect(() => {
+    if (!selectedHeroId) return;
+
+    const fetchDetails = async () => {
+      try {
+        const data = await fetchHeroDetails(selectedHeroId);
+        setSelectedHeroDetails(data);
+      } catch (error) {
+        console.error("Error al obtener detalles del héroe:", error);
+      }
+    };
+
+    fetchDetails();
+  }, [selectedHeroId]);
 
   return (
     <div className="min-h-screen  pt-24 px-4 sm:px-8 bg-sky-900">
@@ -68,7 +87,7 @@ function Home() {
                 <HeroCard
                   key={hero.id}
                   hero={hero}
-                  onClick={() => setSelectedHero(hero)}
+                  onClick={() => setSelectedHeroId(hero.id)}
                 />
               ))
           ) : (
@@ -79,9 +98,12 @@ function Home() {
         </div>
       )}
       <HeroModal
-        hero={selectedHero}
-        isOpen={!!selectedHero}
-        onClose={() => setSelectedHero(null)}
+        hero={selectedHeroDetails}
+        isOpen={!!selectedHeroDetails}
+        onClose={() => {
+          setSelectedHeroId(null);
+          setSelectedHeroDetails(null);
+        }}
       />
     </div>
   );
