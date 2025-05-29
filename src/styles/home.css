@@ -1,0 +1,16 @@
+body {
+  background-color: #062f4a;
+}
+
+h2 {
+  color: #0dacc4;
+}
+body {
+  padding-top: var(--header-height);
+}
+
+@media (max-width: 640px) {
+  :root {
+    --header-height: 80px;
+  }
+}
