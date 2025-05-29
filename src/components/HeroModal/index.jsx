@@ -24,7 +24,7 @@ export default function HeroModal({ hero, isOpen, onClose }) {
         <>
           <p>
             <strong>Nombre completo:</strong>{" "}
-            {hero.biography?.fullName || "No disponible"}
+            {hero.name || hero.biography?.fullName || "No disponible"}
           </p>
           <p>
             <strong>Publisher:</strong> {hero.biography?.publisher}
@@ -39,6 +39,10 @@ export default function HeroModal({ hero, isOpen, onClose }) {
           </p>
           <p>
             <strong>Aligment:</strong> {hero.biography?.alignment}
+          </p>
+          <p>
+            <strong>Trabajo:</strong>{" "}
+            {hero.work.base || hero.occupation || "No disponible"}
           </p>
         </>
       ),
